@@ -27,6 +27,7 @@ pipenv run migrate;
 pipenv run upgrade;
 ```
 
+
 > Note: Codespaces users can connect to psql by typing: `psql -h localhost -U gitpod example`
 
 ## 2) How to Start coding
