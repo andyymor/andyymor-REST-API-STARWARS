@@ -40,9 +40,9 @@ def sitemap():
 def get_users():
     
     users = User.query.all()
-    all_users = list(map(lambda x: x.serialize(), users))
+    serialized_users = [users.]
 
-    return jsonify(all_users), 200
+    
 
 @app.route('/users', methods=['GET'])
 def get_users(user_id):
@@ -55,25 +55,37 @@ def get_users(user_id):
 
 
 @app.route('/people', methods=['GET'])
-def get_all_people():
+def people():
     people=People.query.all()
-
-    response_body = {
-        "msg": "Hello, this is your GET /user response "
-    }
-
-    return jsonify(response_body), 200
+    serialized_people = [person.serialize() for person in people]
+  
+    return jsonify(serialized_people), 200
 
 
-@app.route('/people', methods=['GET'])
-def get_all_people(people_id):
-   people = User.query.filterby(user=people_id).first()
+@app.route('/people/<int: people_id>', methods=['GET'])
+def get_person(people_id):
+   person = People.query.get(people_id)
 
-   response_body = {
-        "msg": "Hello, this is your GET /user response "
-    }
+   if person is None: 
+    raise APIException("Person not found", status_code=404)
 
-    return jsonify(people), 200
+   return jsonify(person.serialize()), 200
+
+@app.route('/planets', methods=['GET'])
+def get_planets():
+    planets=Planet.query.all()
+    serialized_planets = [planet.serialize() for planet in planets]
+  
+    return jsonify(serialized_planets), 200
+
+@app.route('/planets/<int: planet_id>', methods=['GET'])
+def get_planet(planet_id):
+   planet = Planet.query.get(planet_id)
+
+   if planet is None: 
+    raise APIException("Person not found", status_code=404)
+
+   return jsonify(planet.serialize()), 200
 
 
 
