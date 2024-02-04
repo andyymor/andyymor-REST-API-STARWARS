@@ -8,7 +8,7 @@ from flask_swagger import swagger
 from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from admin import setup_admin
-from models import db, User, UserFavorites, Planet, People
+from models import db, User, UserFavorites, Planet, People, Vehicle
 #from models import Person
 
 app = Flask(__name__)
@@ -40,7 +40,7 @@ def sitemap():
 def get_users():
     
     users = User.query.all()
-    serialized_users = [users.]
+    serialized_users = [users.serialize() for user in users]
 
     
 
