@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-# from sqlalchemy import Integer, Column,.String, ForeignKey
+from sqlalchemy import Integer, Column,String, ForeignKey
 from sqlalchemy.orm import relationship
 
 db = SQLAlchemy()
@@ -10,7 +10,7 @@ class User(db.Model):
     password = db.Column(db.String(255), unique=False, nullable=False)
     username = db.Column(db.String(100), unique=True, nullable=False)
     is_active = db.Column(db.Boolean(), unique=False, nullable=False)
-    favorites = relationship("Favorites", back_populates = "User")
+    favorites = relationship("Favorites", back_populates = "user")
     
     def __repr__(self):
         return '<User %r>' % self.username
@@ -27,10 +27,10 @@ class Favorites(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(250), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
-    vehicle_id = db.Column(db.Integer(250), db.ForeignKey("vehicle.id"))
-    planet_id = db.Column(db.Integer(250), db.ForeignKey("planet.id"))
-    people_id = db.Column(db.Integer(250), db.ForeignKey("people.id"))
-    user = relationship("User", back_populates = "Favorites")
+    vehicle_id = db.Column(db.Integer, db.ForeignKey("vehicle.id"))
+    planet_id = db.Column(db.Integer, db.ForeignKey("planet.id"))
+    people_id = db.Column(db.Integer, db.ForeignKey("people.id"))
+    user = relationship("User", back_populates = "favorites")
 
    
     def serialize(self):
@@ -81,8 +81,8 @@ class People(db.Model):
     hair_color = db.Column(db.String(80), unique=False, nullable=True)
     eye_color = db.Column(db.String(80), unique=False, nullable=True)
     homeworld = db.Column(db.String(250))
-    species_id = db.Column(db.String(250), ForeignKey=("species.id"))
-    species = relationship("Species", back_populates=("people"))
+    # species_id = db.Column(db.String(250), ForeignKey=("species.id"))
+    # species = relationship("Species", back_populates=("people"))
 
     
     def serialize(self):
