@@ -66,7 +66,7 @@ def get_users_favorites():
     return jsonify(serialized_favorites), 200
     
 
-
+# People routes
 
 @app.route('/people', methods=['GET'])
 def people():
@@ -85,23 +85,47 @@ def get_person(people_id):
 
    return jsonify(person.serialize()), 200
 
+@app.route('/favorite/people/<int:people_id>', methods=['DELETE'])
+def delete_people(people_id):
+ 
+   user_id=request.args.get("user_id")
+   favorite = Favorites.query.filter_by(user_id=user_id, people_id=people_id).first()
+   if favorite is None:
+           raise APIException("FAILED", 400)
+   db.session.delete(favorite)
+   db.session.commit()
+
+   return jsonify({"message": "DELETED people, sweet!"}),200
+
+
+
+@app.route('/favorite/people/<int:people_id>', methods=['POST'])
+def add_people(people_id):
+ 
+   user_id=request.args.get("user_id")
+   user = User.query.get(user_id)
+   if user is None:
+           raise APIException("FAILED", 400)
+   favorite = Favorites(name = "people", user_id = user_id, people_id = people_id)
+   db.session.add(favorite)
+   db.session.commit()
+
+   return jsonify({"message": "Added people, sweet!"}),200
+
+
+
+
+
+
+
+# planet routes
+
 @app.route('/planets', methods=['GET'])
 def get_planets():
     planets=Planet.query.all()
     serialized_planets = [planet.serialize() for planet in planets]
   
     return jsonify(serialized_planets), 200
-
-@app.route('/planets/<int:planet_id>', methods=['GET'])
-def get_planet(planet_id):
-   planet = Planet.query.get(planet_id)
-
-   if planet is None: 
-    raise APIException("Person not found", status_code=404)
-
-   return jsonify(planet.serialize()), 200
-
-
 
 @app.route('/favorite/planets/<int:planet_id>', methods=['POST'])
 def add_planet(planet_id):
@@ -115,6 +139,23 @@ def add_planet(planet_id):
    db.session.commit()
 
    return jsonify({"message": "Added planet, sweet!"}),200
+
+
+
+
+  
+
+@app.route('/planets/<int:planet_id>', methods=['GET'])
+def get_planet(planet_id):
+   planet = Planet.query.get(planet_id)
+
+   if planet is None: 
+    raise APIException("Person not found", status_code=404)
+
+   return jsonify(planet.serialize()), 200
+
+
+
 
 
 @app.route('/favorite/planets/<int:planet_id>', methods=['DELETE'])
