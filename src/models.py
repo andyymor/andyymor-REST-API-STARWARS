@@ -5,12 +5,13 @@ from sqlalchemy.orm import relationship
 db = SQLAlchemy()
 
 class User(db.Model):
+    __tablename__="user"
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(255), unique=False, nullable=False)
     username = db.Column(db.String(100), unique=True, nullable=False)
     is_active = db.Column(db.Boolean(), unique=False, nullable=False)
-    favorites = relationship("Favorites", back_populates = "user")
+    # favorites = relationship("Favorites", back_populates = "user")
     
     def __repr__(self):
         return '<User %r>' % self.username
@@ -19,7 +20,7 @@ class User(db.Model):
             "id": self.id,
             "email": self.email,
             "username": self.username,
-            "favorites": self.favorites
+            "favorites": self.favorite,
             # do not serialize the password, its a security breach
         }
 class Favorites(db.Model):
@@ -30,7 +31,7 @@ class Favorites(db.Model):
     vehicle_id = db.Column(db.Integer, db.ForeignKey("vehicle.id"))
     planet_id = db.Column(db.Integer, db.ForeignKey("planet.id"))
     people_id = db.Column(db.Integer, db.ForeignKey("people.id"))
-    user = relationship("User", back_populates = "favorites")
+    # user = relationship("User", back_populates = "favorites")
 
    
     def serialize(self):
@@ -45,7 +46,7 @@ class Favorites(db.Model):
             # do not serialize the password, its a security breach
         }
 class Planet(db.Model):
-    __tablename__ = "Planet"
+    __tablename__ = "planet"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), unique=True, nullable=False)
     mass = db.Column(db.Integer, unique=False, nullable=True)
@@ -70,7 +71,7 @@ class Planet(db.Model):
     
 
 class People(db.Model):
-    __tablename__= "Character"
+    __tablename__= "people"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), unique=True, nullable=False)
     gender = db.Column(db.String(80), unique=False, nullable=True)
@@ -101,7 +102,7 @@ class People(db.Model):
 
 
 class Vehicle(db.Model):
-    __tablename__= "Vehicle"
+    __tablename__= "vehicle"
     id = db.Column(db.Integer, primary_key=True)
     image_url = db.Column(db.String(225))
     name = db.Column(db.String(120), unique=True, nullable=False)

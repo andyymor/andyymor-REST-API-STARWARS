@@ -76,7 +76,7 @@ def people():
     return jsonify(serialized_people), 200
 
 
-@app.route('/people/<int: people_id>', methods=['GET'])
+@app.route('/people/<int:people_id>', methods=['GET'])
 def get_person(people_id):
    person = People.query.get(people_id)
 
@@ -92,7 +92,7 @@ def get_planets():
   
     return jsonify(serialized_planets), 200
 
-@app.route('/planets/<int: planet_id>', methods=['GET'])
+@app.route('/planets/<int:planet_id>', methods=['GET'])
 def get_planet(planet_id):
    planet = Planet.query.get(planet_id)
 
@@ -103,7 +103,7 @@ def get_planet(planet_id):
 
 
 
-@app.route('/favorite/planets/<int: planet_id>', methods=['POST'])
+@app.route('/favorite/planets/<int:planet_id>', methods=['POST'])
 def add_planet(planet_id):
  
    user_id=request.args.get("user_id")
@@ -117,7 +117,7 @@ def add_planet(planet_id):
    return jsonify({"message": "Added planet, sweet!"}),200
 
 
-@app.route('/favorite/planets/<int: planet_id>', methods=['DELETE'])
+@app.route('/favorite/planets/<int:planet_id>', methods=['DELETE'])
 def delete_planet(planet_id):
  
    user_id=request.args.get("user_id")
