@@ -11,7 +11,7 @@ class User(db.Model):
     password = db.Column(db.String(255), unique=False, nullable=False)
     username = db.Column(db.String(100), unique=True, nullable=False)
     is_active = db.Column(db.Boolean(), unique=False, nullable=False)
-    # favorites = relationship("Favorites", back_populates = "user")
+    favorites = relationship("Favorites", back_populates = "user")
     
     def __repr__(self):
         return '<User %r>' % self.username
@@ -28,10 +28,10 @@ class Favorites(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(250), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
-    vehicle_id = db.Column(db.Integer, db.ForeignKey("vehicle.id"))
+    # vehicle_id = db.Column(db.Integer, db.ForeignKey("vehicle.id"))
     planet_id = db.Column(db.Integer, db.ForeignKey("planet.id"))
     people_id = db.Column(db.Integer, db.ForeignKey("people.id"))
-    # user = relationship("User", back_populates = "favorites")
+    user = relationship("User", back_populates = "favorites")
 
    
     def serialize(self):
@@ -101,28 +101,28 @@ class People(db.Model):
         } 
 
 
-class Vehicle(db.Model):
-    __tablename__= "vehicle"
-    id = db.Column(db.Integer, primary_key=True)
-    image_url = db.Column(db.String(225))
-    name = db.Column(db.String(120), unique=True, nullable=False)
-    model_name = db.Column(db.String(80))
-    manufacturer = db.Column(db.String(100))
-    price = db.Column(db.Integer)
-    description = db.Column(db.String(500))
+# class Vehicle(db.Model):
+#     __tablename__= "vehicle"
+#     id = db.Column(db.Integer, primary_key=True)
+#     image_url = db.Column(db.String(225))
+#     name = db.Column(db.String(120), unique=True, nullable=False)
+#     model_name = db.Column(db.String(80))
+#     manufacturer = db.Column(db.String(100))
+#     price = db.Column(db.Integer)
+#     description = db.Column(db.String(500))
 
     
-    def serialize(self):
-        return {
-    "id":self.id,
-    "image_url": self.image_url,
-    "name": self.name ,
-    "model_name": self.model_name,
-    "manufacturer":self.manufacturer,
-    "price": self.price,
-    "description": self.description
+#     def serialize(self):
+#         return {
+#     "id":self.id,
+#     "image_url": self.image_url,
+#     "name": self.name ,
+#     "model_name": self.model_name,
+#     "manufacturer":self.manufacturer,
+#     "price": self.price,
+#     "description": self.description
 
-        }
+#         }
 
 
 
